@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 .DS_Store
 images/
+download_50_images.py
