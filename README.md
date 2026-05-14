@@ -6,12 +6,18 @@ This project is a Python-based system built to extract key fields from invoice i
 **Kaggle:** [High Quality Invoice Images for OCR](https://www.kaggle.com/datasets/osamahosamabdellatif/high-quality-invoice-images-for-ocr)
 The system expects 50 images from `batch_1 > batch_1 > batch1_1 > batch1-0331 to batch1-0381`.
 
-## Approach
-This system implements two distinct and modern approaches:
-1. **Pipeline A (Prebuilt Structured Model): Azure AI Document Intelligence** 
-   Uses Microsoft's prebuilt invoice extraction model which employs OCR combined with a robust deep learning structured extraction layer.
-2. **Pipeline B (Multimodal LLM): Google Gemini 1.5 Flash API** 
-   A state-of-the-art vision-language model approach, which consumes the raw image directly and returns structured JSON using instructions provided in the prompt.
+## 💡 The Two-Pipeline Approach (Cross-Validation)
+To ensure robustness and satisfy the requirement for meaningfully different extraction techniques, this system runs each invoice through two fundamentally distinct architectures:
+
+### 1. Pipeline A: Structured Prebuilt Model (Azure Document Intelligence)
+* **Methodology:** Classical OCR combined with a specialized deep-learning spatial/layout analyzer.
+* **Why it's different:** Microsoft Azure's model is explicitly pre-trained on millions of standard invoices. It relies on rigid, pre-trained spatial rules to identify fields (e.g., finding the word "Total" and extracting the number next to it based on bounding boxes).
+
+### 2. Pipeline B: Multimodal Vision-Language Model (Google Gemini Flash)
+* **Methodology:** Pure Generative AI (LLM + Vision).
+* **Why it's different:** Instead of line-by-line OCR, it consumes the raw image directly alongside a prompt. It uses generative context understanding to infer fields, making it highly robust to messy or completely non-standard layouts where traditional OCR fails.
+
+**Validation Strategy:** By comparing the outputs of these two vastly different paradigms, we can cross-validate the results with extremely high confidence.
 
 ### Extracted Fields
 - Seller Name

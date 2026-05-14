@@ -1,6 +1,7 @@
 import google.generativeai as genai
 from PIL import Image
 import json
+import time
 from .base import BaseExtractor
 import config
 
@@ -9,8 +10,8 @@ class GeminiExtractor(BaseExtractor):
         if not config.GEMINI_API_KEY:
             raise ValueError("Gemini API key not provided in .env (GEMINI_API_KEY).")
         genai.configure(api_key=config.GEMINI_API_KEY)
-        # Using Gemini 1.5 Flash as it is highly efficient and capable of reading documents
-        self.model = genai.GenerativeModel('gemini-1.5-flash')
+        # Using Gemini Flash as it is highly efficient and capable of reading documents
+        self.model = genai.GenerativeModel('gemini-flash-latest')
         
     def extract(self, image_path: str) -> dict:
         result = {
@@ -45,6 +46,7 @@ class GeminiExtractor(BaseExtractor):
         
         try:
             img = Image.open(image_path)
+            time.sleep(4) # Respect 15 requests/minute free tier limit
             response = self.model.generate_content([prompt, img])
             text = response.text.strip()
             
